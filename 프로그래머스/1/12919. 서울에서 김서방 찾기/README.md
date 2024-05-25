@@ -2,6 +2,10 @@
 
 [문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/12919) 
 
+
+### 힌트
+index.of를 사용할 줄 알면 좋을 듯
+
 ### 성능 요약
 
 메모리: 79.9 MB, 시간: 5.73 ms
