@@ -1,73 +1,79 @@
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-import java.util.Scanner;
+import java.util.StringTokenizer;
 
 public class Main {
-	static int visited[];
-	static ArrayList<Integer>[] A;
-	static int N,M,K,X;
-	static List<Integer> answer;
+	static boolean[] visited;
+	static ArrayList<Integer>[] arr;
 	public static void main(String[] args) throws IOException {
-		Scanner sc = new Scanner(System.in);
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
 
-		int N = sc.nextInt();
-		int M = sc.nextInt();
-		int K = sc.nextInt();
-		int X = sc.nextInt();
+		int N = Integer.parseInt(st.nextToken());
+		int M = Integer.parseInt(st.nextToken());
+		int K = Integer.parseInt(st.nextToken());
+		int X = Integer.parseInt(st.nextToken());
 
-		A = new ArrayList[N+1];
-		answer = new ArrayList<>();
+		arr = new ArrayList[N+1];
 		for (int i = 1; i <= N; i++) {
-			// A 배열 안에 [] 하나씩 넣기
-			A[i] = new ArrayList<Integer>();
+			arr[i] = new ArrayList<>();
+		}
+		visited = new boolean[N+1];
+
+
+		for (int i = 0; i < M; i ++) {
+			st = new StringTokenizer(br.readLine());
+			int start = Integer.parseInt(st.nextToken());
+			int end = Integer.parseInt(st.nextToken());
+
+			arr[start].add(end);
 		}
 
-		for (int i =0; i < M; i++) {
-			int S = sc.nextInt();
-			int E = sc.nextInt();
-			A[S].add(E);
-		}
+		List<Integer> result = bfs(K,X);
 
-		visited = new int[N+1];
-		for (int i =0; i<=N; i++) {
-			visited[i] = -1;
-		}
-
-		BFS(X);
-		for (int i =0; i<=N; i++) {
-			if (visited[i] == K) {
-				answer.add(i);
+		if (result.isEmpty()) {
+			System.out.println(-1);
+		} else {
+			Collections.sort(result);
+			for (int city : result) {
+				System.out.println(city);
 			}
 		}
 
-		if (answer.isEmpty()) {
-			System.out.println("-1");
-		}
-		else {
-			Collections.sort(answer);
-			for (int i : answer) {
-				System.out.println(i);
-			}
-		}
 	}
 
-	private static void BFS(int Node) {
-		Queue<Integer> queue = new LinkedList<Integer>();
-		queue.add(Node);
-		visited[Node]++;
+	private static List<Integer> bfs(int K, int X) {
+		Queue<Integer> queue = new LinkedList<>();
+		int[] distance = new int[arr.length];
+		Arrays.fill(distance,-1);
+		distance[X] = 0;
+		queue.add(X);
+
+		List<Integer> result = new ArrayList<>();
+
 		while (!queue.isEmpty()) {
-			int now_Node = queue.poll();
-			for (int i: A[now_Node]) {
-				if (visited[i] == -1) {
-					visited[i] = visited[now_Node] + 1;
+			int current = queue.poll();
+
+			for (int i : arr[current]) {
+				if (distance[i] == -1) {
+					distance[i] = distance[current] + 1;
 					queue.add(i);
+
+					if (distance[i] == K) {
+						result.add(i);
+					}
 				}
 			}
 		}
-	}
+		return result;
 
+
+	}
 }
