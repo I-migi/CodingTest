@@ -1,23 +1,31 @@
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
 public class Main {
-	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
-		int N = sc.nextInt();
-		int K = sc.nextInt();
-		int[] A = new int[N];
-		int count = 0;
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+
+		int N = Integer.parseInt(st.nextToken());
+		int K = Integer.parseInt(st.nextToken());
+
+		int[] moneys = new int[N];
 
 		for (int i = 0; i < N; i++) {
-			A[i] = sc.nextInt();
+			moneys[i] = Integer.parseInt(br.readLine());
 		}
 
-		for (int i = N-1; i >=0; i--) {
-			if (A[i] <= K) {
-				count = count + K/A[i];
-				K = K % A[i];
+		int answer = 0;
+
+		for (int i = N - 1; i >= 0; i--) {
+			if (moneys[i] <= K) {
+				answer += K / moneys[i];
+				K %= moneys[i];
 			}
 		}
-		System.out.println(count);
+
+		System.out.println(answer);
 	}
 }
